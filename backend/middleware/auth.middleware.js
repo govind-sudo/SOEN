@@ -10,26 +10,34 @@ export const authUser = async (req, res, next) => {
             req.cookies.token ||
             (authHeader && authHeader.split(' ')[1]);
 
+        console.log("TOKEN EXISTS:", !!token);
+        console.log("JWT SECRET EXISTS:", !!process.env.JWT_SECRET);
+
         if (!token) {
-            return res.status(401).send({
-                error: 'Unauthorized User'
-            });
+            console.log("NO TOKEN");
+            return res.status(401).send({ error: 'Unauthorized User' });
         }
 
         const isBlackListed = await redisClient.get(token);
 
+        console.log("BLACKLIST RESULT:", isBlackListed);
+
         if (isBlackListed) {
+            console.log("TOKEN IS BLACKLISTED");
+
             res.cookie('token', '');
+
             return res.status(401).send({
                 error: 'Unauthorized User'
             });
         }
 
-console.log("JWT SECRET EXISTS:", !!process.env.JWT_SECRET);
+        const decoded = jwt.verify(
+            token,
+            process.env.JWT_SECRET
+        );
 
-const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-console.log("JWT DECODED:", decoded);
+        console.log("JWT VERIFIED:", decoded);
 
         req.user = decoded;
 
