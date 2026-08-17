@@ -1,4 +1,4 @@
-import 'dotenv/config';
+import 'dotenv/config.js';
 import http from 'http';
 import app from './app.js';
 import { Server } from 'socket.io';
@@ -7,7 +7,7 @@ import mongoose from 'mongoose';
 import projectModel from './models/project.model.js';
 import { generateResult } from './services/ai.service.js';
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 
 
 
@@ -33,6 +33,9 @@ io.use(async (socket, next) => {
 
         socket.project = await projectModel.findById(projectId);
 
+        if (!socket.project) {
+            return next(new Error('Project not found'));
+        }
 
         if (!token) {
             return next(new Error('Authentication error'))
@@ -59,10 +62,7 @@ io.use(async (socket, next) => {
 io.on('connection', socket => {
     socket.roomId = socket.project._id.toString()
 
-
     console.log('a user connected');
-
-
 
     socket.join(socket.roomId);
 
@@ -75,23 +75,34 @@ io.on('connection', socket => {
 
         if (aiIsPresentInMessage) {
 
+    const prompt = message.replace('@ai', '');
 
-            const prompt = message.replace('@ai', '');
+    try {
+        const result = await generateResult(prompt);
 
-            const result = await generateResult(prompt);
+        io.to(socket.roomId).emit('project-message', {
+            message: result,
+            sender: {
+                _id: 'ai',
+                email: 'AI'
+            }
+        });
 
+    } catch (error) {
 
-            io.to(socket.roomId).emit('project-message', {
-                message: result,
-                sender: {
-                    _id: 'ai',
-                    email: 'AI'
-                }
-            })
+        console.error('AI ERROR:', error);
 
+        io.to(socket.roomId).emit('project-message', {
+            message: 'AI is temporarily unavailable. Please try again.',
+            sender: {
+                _id: 'ai',
+                email: 'AI'
+            }
+        });
+    }
 
-            return
-        }
+    return;
+}
 
 
     })
