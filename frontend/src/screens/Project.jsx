@@ -6,6 +6,7 @@ import { initializeSocket, receiveMessage, sendMessage } from '../config/socket'
 import Markdown from 'markdown-to-jsx'
 import hljs from 'highlight.js'
 import { getWebContainer } from '../config/webContainer'
+import 'highlight.js/styles/nord.css';
 
 function SyntaxHighlightedCode(props) {
     const ref = useRef(null)
