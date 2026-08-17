@@ -15,7 +15,7 @@ export const authUser = async (req, res, next) => {
 
         if (!token) {
             console.log("NO TOKEN");
-            return res.status(401).send({ error: 'Unauthorized User' });
+            return res.status(401).send({ error: 'Unauthorized User token' });
         }
 
         const isBlackListed = await redisClient.get(token);
@@ -28,7 +28,7 @@ export const authUser = async (req, res, next) => {
             res.cookie('token', '');
 
             return res.status(401).send({
-                error: 'Unauthorized User'
+                error: 'Unauthorized User balclist'
             });
         }
 
@@ -48,7 +48,7 @@ export const authUser = async (req, res, next) => {
         console.log("AUTH ERROR:", error.message);
 
         res.status(401).send({
-            error: 'Unauthorized User'
+            error: 'Unauthorized User catch'
         });
     }
 };
