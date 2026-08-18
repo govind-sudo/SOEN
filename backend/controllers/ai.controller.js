@@ -1,6 +1,5 @@
 import * as ai from '../services/ai.service.js';
 
-
 export const getResult = async (req, res) => {
     try {
         const { prompt } = req.query;
