@@ -126,14 +126,14 @@ const Project = () => {
     }
 
     const send = () => {
-        if (!message.trim()) return
-        sendMessage('project-message', {
-            message,
-            sender: user
-        })
-        setMessages(prev => [...prev, { sender: user, message }])
-        setMessage('')
-    }
+    if (!message.trim()) return
+
+    sendMessage('project-message', {
+        message
+    })
+
+    setMessage('')
+}
 
     const closeFile = (e, fileToClose) => {
         e.stopPropagation()
@@ -173,6 +173,14 @@ const Project = () => {
 
         initializeSocket(project._id)
 
+        axios.get(`/messages/${project._id}`)
+            .then(res => {
+                setMessages(res.data)
+            })
+            .catch(err => {
+                console.error('Failed to load messages:', err)
+            })
+
         if (!webContainer) {
             getWebContainer().then(container => {
                 setWebContainer(container)
@@ -180,7 +188,7 @@ const Project = () => {
         }
 
         receiveMessage('project-message', data => {
-            if (data.sender?._id === 'ai') {
+            if ( data.senderType === 'ai' || data.sender?._id === 'ai') {
                 try {
                     const parsed = JSON.parse(data.message)
                     if (parsed.fileTree) {
@@ -330,7 +338,9 @@ const Project = () => {
                     )}
 
                     {messages.map((msg, index) => {
-                        const isAi = msg.sender?._id === 'ai'
+                        const isAi =
+                            msg.senderType === 'ai' ||
+                            msg.sender?._id === 'ai'
                         const isSelf = msg.sender?._id === user?._id?.toString()
 
                         return (

@@ -6,6 +6,7 @@ import jwt from 'jsonwebtoken';
 import mongoose from 'mongoose';
 import projectModel from './models/project.model.js';
 import { generateResult } from './services/ai.service.js';
+import Message from './models/message.model.js';
 
 const port = process.env.PORT || 3001;
 
@@ -66,47 +67,95 @@ io.on('connection', socket => {
 
     socket.join(socket.roomId);
 
-    socket.on('project-message', async data => {
+socket.on('project-message', async data => {
 
-        const message = data.message;
+    const message = data.message;
 
+    try {
+
+        // Save user message
+        const savedMessage = await Message.create({
+            project: socket.project._id,
+            sender: socket.user._id,
+            senderType: 'user',
+            message: message
+        });
+
+        const messageData = {
+            message: savedMessage.message,
+            sender: {
+                _id: socket.user._id,
+                email: socket.user.email
+            },
+            senderType: 'user',
+            createdAt: savedMessage.createdAt
+        };
+
+        // Send to everyone in project
+        io.to(socket.roomId).emit(
+            'project-message',
+            messageData
+        );
+
+
+        // Check AI
         const aiIsPresentInMessage = message.includes('@ai');
-        socket.broadcast.to(socket.roomId).emit('project-message', data)
 
         if (aiIsPresentInMessage) {
 
-    const prompt = message.replace('@ai', '');
+            const prompt = message.replace('@ai', '');
 
-    try {
-        const result = await generateResult(prompt);
+            try {
 
-        io.to(socket.roomId).emit('project-message', {
-            message: result,
-            sender: {
-                _id: 'ai',
-                email: 'AI'
+                const result = await generateResult(prompt);
+
+                // Save AI message
+                const aiMessage = await Message.create({
+                    project: socket.project._id,
+                    sender: null,
+                    senderType: 'ai',
+                    message: result
+                });
+
+                // Send AI message
+                io.to(socket.roomId).emit(
+                    'project-message',
+                    {
+                        message: aiMessage.message,
+                        sender: {
+                            _id: 'ai',
+                            email: 'AI'
+                        },
+                        senderType: 'ai',
+                        createdAt: aiMessage.createdAt
+                    }
+                );
+
+            } catch (error) {
+
+                console.error('AI ERROR:', error);
+
+                io.to(socket.roomId).emit(
+                    'project-message',
+                    {
+                        message: 'AI is temporarily unavailable. Please try again.',
+                        sender: {
+                            _id: 'ai',
+                            email: 'AI'
+                        },
+                        senderType: 'ai'
+                    }
+                );
             }
-        });
+        }
 
     } catch (error) {
 
-        console.error('AI ERROR:', error);
+        console.error('MESSAGE SAVE ERROR:', error);
 
-        io.to(socket.roomId).emit('project-message', {
-            message: 'AI is temporarily unavailable. Please try again.',
-            sender: {
-                _id: 'ai',
-                email: 'AI'
-            }
-        });
     }
 
-    return;
-}
-
-
-    })
-
+});
     socket.on('disconnect', () => {
         console.log('user disconnected');
         socket.leave(socket.roomId)
