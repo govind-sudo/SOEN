@@ -5,7 +5,6 @@ import * as authMiddleWare from '../middleware/auth.middleware.js';
 
 const router = Router();
 
-
 router.post('/create',
     authMiddleWare.authUser,
     body('name').isString().withMessage('Name is required'),
