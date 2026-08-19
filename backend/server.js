@@ -67,6 +67,26 @@ io.on('connection', socket => {
 
     socket.join(socket.roomId);
 
+    socket.on('typing', () => {
+
+    socket.broadcast
+        .to(socket.roomId)
+        .emit('user-typing', {
+            user: socket.user
+        });
+
+    });
+
+    socket.on('stop-typing', () => {
+
+    socket.broadcast
+        .to(socket.roomId)
+        .emit('user-stop-typing', {
+            user: socket.user
+        });
+
+    });
+
 socket.on('project-message', async data => {
 
     const message = data.message;

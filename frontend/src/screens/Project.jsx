@@ -2,11 +2,20 @@ import React, { useState, useEffect, useContext, useRef, useCallback } from 'rea
 import { UserContext } from '../context/user.context'
 import { useNavigate, useLocation } from 'react-router-dom'
 import axios from '../config/axios'
-import { initializeSocket, receiveMessage, sendMessage } from '../config/socket'
+import {
+    initializeSocket,
+    receiveMessage,
+    sendMessage,
+    sendTyping,
+    sendStopTyping,
+    receiveTyping,
+    receiveStopTyping,
+    removeSocketListener
+} from '../config/socket'
 import Markdown from 'markdown-to-jsx'
 import hljs from 'highlight.js'
 import { getWebContainer } from '../config/webContainer'
-import 'highlight.js/styles/nord.css';
+import 'highlight.js/styles/nord.css'
 
 function SyntaxHighlightedCode(props) {
     const ref = useRef(null)
@@ -39,10 +48,12 @@ const Project = () => {
     const [project, setProject] = useState(location.state?.project || {})
     const [message, setMessage] = useState('')
     const messageBox = useRef(null)
+    const typingTimeout = useRef(null)
 
     const [users, setUsers] = useState([])
     const [userSearch, setUserSearch] = useState('')
     const [messages, setMessages] = useState([])
+    const [typingUsers, setTypingUsers] = useState([])
     const [fileTree, setFileTree] = useState({})
 
     const [currentFile, setCurrentFile] = useState(null)
@@ -126,14 +137,28 @@ const Project = () => {
     }
 
     const send = () => {
-    if (!message.trim()) return
+        if (!message.trim()) return
 
-    sendMessage('project-message', {
-        message
-    })
+        sendMessage('project-message', {
+            message,
+            projectId: project._id
+        })
 
-    setMessage('')
-}
+        sendStopTyping()
+        clearTimeout(typingTimeout.current)
+        setMessage('')
+    }
+
+    const handleTyping = (e) => {
+        setMessage(e.target.value)
+
+        sendTyping()
+
+        clearTimeout(typingTimeout.current)
+        typingTimeout.current = setTimeout(() => {
+            sendStopTyping()
+        }, 1200)
+    }
 
     const closeFile = (e, fileToClose) => {
         e.stopPropagation()
@@ -188,7 +213,7 @@ const Project = () => {
         }
 
         receiveMessage('project-message', data => {
-            if ( data.senderType === 'ai' || data.sender?._id === 'ai') {
+            if (data.senderType === 'ai' || data.sender?._id === 'ai') {
                 try {
                     const parsed = JSON.parse(data.message)
                     if (parsed.fileTree) {
@@ -200,6 +225,33 @@ const Project = () => {
                 }
             }
             setMessages(prev => [...prev, data])
+        })
+
+        receiveTyping(data => {
+            const incomingUser = data?.user
+            if (!incomingUser) return
+
+            const incomingUserId = incomingUser._id || incomingUser.id
+            const currentUserId = user?._id || user?.id
+
+            // Don't show typing indicator for oneself
+            if (incomingUserId && currentUserId && incomingUserId.toString() === currentUserId.toString()) {
+                return
+            }
+
+            setTypingUsers(prev => {
+                const alreadyTyping = prev.some(u => (u._id || u.id)?.toString() === incomingUserId?.toString())
+                if (alreadyTyping) return prev
+                return [...prev, incomingUser]
+            })
+        })
+
+        receiveStopTyping(data => {
+            const targetUser = data?.user
+            if (!targetUser) return
+            const targetId = targetUser._id || targetUser.id
+
+            setTypingUsers(prev => prev.filter(u => (u._id || u.id)?.toString() !== targetId?.toString()))
         })
 
         axios.get(`/projects/get-project/${project._id}`).then(res => {
@@ -215,13 +267,19 @@ const Project = () => {
         axios.get('/users/all').then(res => {
             setUsers(res.data.users || [])
         }).catch(err => console.error(err))
-    }, [project?._id])
+
+        return () => {
+            removeSocketListener('project-message')
+            removeSocketListener('user-typing')
+            removeSocketListener('user-stop-typing')
+        }
+    }, [project?._id, user?._id, user?.id])
 
     useEffect(() => {
         if (messageBox.current) {
             messageBox.current.scrollTop = messageBox.current.scrollHeight
         }
-    }, [messages])
+    }, [messages, typingUsers])
 
     const saveFileTree = (ft) => {
         axios.put('/projects/update-file-tree', {
@@ -373,6 +431,22 @@ const Project = () => {
                     })}
                 </div>
 
+                    {/* Animated Typing Indicator */}
+                    {typingUsers.length > 0 && (
+                        <div className="px-4 py-1.5 flex items-center gap-2 text-xs text-indigo-300/80 bg-transparent animate-in fade-in duration-150">
+                            <div className="flex items-center gap-1">
+                                <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-bounce [animation-duration:0.6s] [animation-delay:-0.3s]" />
+                                <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-bounce [animation-duration:0.6s] [animation-delay:-0.15s]" />
+                                <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-bounce [animation-duration:0.6s]" />
+                            </div>
+                            <span className="truncate font-medium">
+                                {typingUsers.length === 1
+                                    ? `${typingUsers[0].email?.split('@')[0]} is typing...`
+                                    : `${typingUsers.map(u => u.email?.split('@')[0]).join(', ')} are typing...`}
+                            </span>
+                        </div>
+                    )}
+
                 {/* Input Field */}
                 <div className="p-3 bg-slate-900 border-t border-slate-800 shrink-0">
                     <form
@@ -384,7 +458,7 @@ const Project = () => {
                     >
                         <input
                             value={message}
-                            onChange={(e) => setMessage(e.target.value)}
+                            onChange={handleTyping}
                             type="text"
                             placeholder="Ask AI or chat..."
                             className="w-full pl-3.5 pr-11 py-2.5 bg-transparent text-sm text-white placeholder-slate-500 focus:outline-none"

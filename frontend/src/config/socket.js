@@ -1,11 +1,8 @@
 import socket from 'socket.io-client';
 
-
 let socketInstance = null;
 
-
 export const initializeSocket = (projectId) => {
-
     socketInstance = socket(import.meta.env.VITE_API_URL, {
         auth: {
             token: localStorage.getItem('token')
@@ -16,13 +13,32 @@ export const initializeSocket = (projectId) => {
     });
 
     return socketInstance;
-
-}
+};
 
 export const receiveMessage = (eventName, cb) => {
-    socketInstance.on(eventName, cb);
-}
+    socketInstance?.on(eventName, cb);
+};
 
 export const sendMessage = (eventName, data) => {
-    socketInstance.emit(eventName, data);
-}
+    socketInstance?.emit(eventName, data);
+};
+
+export const sendTyping = () => {
+    socketInstance?.emit('typing');
+};
+
+export const sendStopTyping = () => {
+    socketInstance?.emit('stop-typing');
+};
+
+export const receiveTyping = (callback) => {
+    socketInstance?.on('user-typing', callback);
+};
+
+export const receiveStopTyping = (callback) => {
+    socketInstance?.on('user-stop-typing', callback);
+};
+
+export const removeSocketListener = (eventName) => {
+    socketInstance?.off(eventName);
+};
