@@ -15,7 +15,7 @@ import {
 import Markdown from 'markdown-to-jsx'
 import hljs from 'highlight.js'
 import { getWebContainer } from '../config/webContainer'
-import 'highlight.js/styles/nord.css'
+import 'highlight.js/styles/github-dark.css'
 
 function SyntaxHighlightedCode(props) {
     const ref = useRef(null)
@@ -335,19 +335,19 @@ const Project = () => {
     )
 
     return (
-        <main className={`h-screen w-screen flex bg-slate-950 text-slate-100 overflow-hidden font-sans select-none ${isDragging ? 'cursor-col-resize select-none' : ''}`}>
+        <main className={`h-screen w-screen flex bg-zinc-950 text-zinc-100 overflow-hidden font-sans select-none ${isDragging ? 'cursor-col-resize select-none' : ''}`}>
             {/* 1. LEFT PANEL: Chat / Collaborators */}
             <section
                 style={{ width: `${leftPanelWidth}px` }}
-                className="relative flex flex-col h-screen bg-slate-900 shrink-0 select-none will-change-[width]"
+                className="relative flex flex-col h-screen bg-zinc-900 shrink-0 select-none will-change-[width]"
             >
                 {/* Header */}
-                <header className="flex items-center justify-between px-4 h-14 bg-slate-900/90 border-b border-slate-800 backdrop-blur shrink-0 z-10">
+                <header className="flex items-center justify-between px-4 h-14 bg-zinc-900/90 border-b border-zinc-800 backdrop-blur shrink-0 z-10">
                     <div className="flex items-center gap-2 min-w-0">
                         <button
                             onClick={() => navigate('/')}
                             title="Back to projects"
-                            className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition shrink-0"
+                            className="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 transition shrink-0"
                         >
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -362,7 +362,7 @@ const Project = () => {
                         <button
                             onClick={() => setIsModalOpen(true)}
                             title="Add collaborator"
-                            className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium bg-slate-800 hover:bg-indigo-600/20 text-slate-300 hover:text-indigo-300 border border-slate-700/60 rounded-lg transition"
+                            className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium bg-zinc-800 hover:bg-white/10 text-zinc-300 hover:text-white border border-zinc-700/80 rounded-lg transition"
                         >
                             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
@@ -372,7 +372,7 @@ const Project = () => {
                         <button
                             onClick={() => setIsSidePanelOpen(!isSidePanelOpen)}
                             title="View collaborators"
-                            className="p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition"
+                            className="p-2 text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-lg transition"
                         >
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
@@ -384,14 +384,14 @@ const Project = () => {
                 {/* Chat Message Box */}
                 <div ref={messageBox} className="flex-1 overflow-y-auto p-4 space-y-4 select-text">
                     {messages.length === 0 && (
-                        <div className="flex flex-col items-center justify-center h-full text-center text-slate-500 py-8">
-                            <div className="w-12 h-12 rounded-2xl bg-slate-800/80 border border-slate-700/60 flex items-center justify-center text-indigo-400 mb-3">
+                        <div className="flex flex-col items-center justify-center h-full text-center text-zinc-500 py-8">
+                            <div className="w-12 h-12 rounded-2xl bg-zinc-800/80 border border-zinc-700/60 flex items-center justify-center text-white mb-3">
                                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                                 </svg>
                             </div>
-                            <p className="text-sm font-medium text-slate-400">Workspace Chat</p>
-                            <p className="text-xs text-slate-500 mt-1 max-w-[200px]">Send prompts to generate code or chat with team members</p>
+                            <p className="text-sm font-medium text-zinc-300">Workspace Chat</p>
+                            <p className="text-xs text-zinc-500 mt-1 max-w-[200px]">Send prompts to generate code or chat with team members</p>
                         </div>
                     )}
 
@@ -405,11 +405,11 @@ const Project = () => {
                             <div key={index} className={`flex flex-col ${isSelf ? 'items-end' : 'items-start'} gap-1.5`}>
                                 <div className="flex items-center gap-1.5 px-1">
                                     {isAi ? (
-                                        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-semibold bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 uppercase tracking-wider">
+                                        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-mono font-semibold bg-white/10 text-white border border-white/20 uppercase tracking-wider">
                                             AI Assistant
                                         </span>
                                     ) : (
-                                        <span className="text-[11px] font-medium text-slate-400">
+                                        <span className="text-[11px] font-medium text-zinc-400">
                                             {isSelf ? 'You' : msg.sender?.email?.split('@')[0]}
                                         </span>
                                     )}
@@ -418,10 +418,10 @@ const Project = () => {
                                 <div
                                     className={`max-w-[90%] rounded-2xl p-3.5 text-sm shadow-md ${
                                         isAi
-                                            ? 'bg-slate-950 border border-slate-800 text-slate-100 rounded-tl-sm w-full'
+                                            ? 'bg-zinc-950 border border-zinc-800 text-zinc-100 rounded-tl-sm w-full'
                                             : isSelf
-                                            ? 'bg-indigo-600 text-white rounded-tr-sm'
-                                            : 'bg-slate-800 border border-slate-700/60 text-slate-200 rounded-tl-sm'
+                                            ? 'bg-white text-black font-medium rounded-tr-sm shadow-white/5'
+                                            : 'bg-zinc-800 border border-zinc-700/80 text-zinc-200 rounded-tl-sm'
                                     }`}
                                 >
                                     {isAi ? WriteAiMessage(msg.message) : <p className="whitespace-pre-wrap break-words leading-relaxed">{msg.message}</p>}
@@ -431,42 +431,42 @@ const Project = () => {
                     })}
                 </div>
 
-                    {/* Animated Typing Indicator */}
-                    {typingUsers.length > 0 && (
-                        <div className="px-4 py-1.5 flex items-center gap-2 text-xs text-indigo-300/80 bg-transparent animate-in fade-in duration-150">
-                            <div className="flex items-center gap-1">
-                                <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-bounce [animation-duration:0.6s] [animation-delay:-0.3s]" />
-                                <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-bounce [animation-duration:0.6s] [animation-delay:-0.15s]" />
-                                <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-bounce [animation-duration:0.6s]" />
-                            </div>
-                            <span className="truncate font-medium">
-                                {typingUsers.length === 1
-                                    ? `${typingUsers[0].email?.split('@')[0]} is typing...`
-                                    : `${typingUsers.map(u => u.email?.split('@')[0]).join(', ')} are typing...`}
-                            </span>
+                {/* Animated Typing Indicator */}
+                {typingUsers.length > 0 && (
+                    <div className="px-4 py-1.5 flex items-center gap-2 text-xs text-zinc-400 bg-transparent animate-in fade-in duration-150">
+                        <div className="flex items-center gap-1">
+                            <span className="w-1.5 h-1.5 rounded-full bg-zinc-400 animate-bounce [animation-duration:0.6s] [animation-delay:-0.3s]" />
+                            <span className="w-1.5 h-1.5 rounded-full bg-zinc-400 animate-bounce [animation-duration:0.6s] [animation-delay:-0.15s]" />
+                            <span className="w-1.5 h-1.5 rounded-full bg-zinc-400 animate-bounce [animation-duration:0.6s]" />
                         </div>
-                    )}
+                        <span className="truncate font-medium">
+                            {typingUsers.length === 1
+                                ? `${typingUsers[0].email?.split('@')[0]} is typing...`
+                                : `${typingUsers.map(u => u.email?.split('@')[0]).join(', ')} are typing...`}
+                        </span>
+                    </div>
+                )}
 
                 {/* Input Field */}
-                <div className="p-3 bg-slate-900 border-t border-slate-800 shrink-0">
+                <div className="p-3 bg-zinc-900 border-t border-zinc-800 shrink-0">
                     <form
                         onSubmit={(e) => {
                             e.preventDefault()
                             send()
                         }}
-                        className="relative flex items-center bg-slate-950 border border-slate-700/80 rounded-xl focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-500/30 transition shadow-inner"
+                        className="relative flex items-center bg-zinc-950 border border-zinc-800 rounded-xl focus-within:border-white focus-within:ring-1 focus-within:ring-white/40 transition shadow-inner"
                     >
                         <input
                             value={message}
                             onChange={handleTyping}
                             type="text"
                             placeholder="Ask AI or chat..."
-                            className="w-full pl-3.5 pr-11 py-2.5 bg-transparent text-sm text-white placeholder-slate-500 focus:outline-none"
+                            className="w-full pl-3.5 pr-11 py-2.5 bg-transparent text-sm text-white placeholder-zinc-500 focus:outline-none"
                         />
                         <button
                             type="submit"
                             disabled={!message.trim()}
-                            className="absolute right-1.5 p-1.5 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-40 disabled:hover:bg-indigo-600 text-white rounded-lg transition"
+                            className="absolute right-1.5 p-1.5 bg-white hover:bg-zinc-200 active:bg-zinc-300 disabled:opacity-30 text-black rounded-lg transition"
                         >
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -477,20 +477,20 @@ const Project = () => {
 
                 {/* Collaborators Overlay */}
                 <div
-                    className={`absolute inset-0 z-20 bg-slate-900 flex flex-col transition-transform duration-300 ease-in-out ${
+                    className={`absolute inset-0 z-20 bg-zinc-900 flex flex-col transition-transform duration-300 ease-in-out ${
                         isSidePanelOpen ? 'translate-x-0' : '-translate-x-full'
                     }`}
                 >
-                    <header className="flex items-center justify-between px-4 h-14 border-b border-slate-800 bg-slate-900">
+                    <header className="flex items-center justify-between px-4 h-14 border-b border-zinc-800 bg-zinc-900">
                         <div className="flex items-center gap-2">
-                            <svg className="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                             </svg>
                             <h2 className="font-semibold text-sm text-white">Project Members</h2>
                         </div>
                         <button
                             onClick={() => setIsSidePanelOpen(false)}
-                            className="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition"
+                            className="p-1.5 text-zinc-400 hover:text-white rounded-lg hover:bg-zinc-800 transition"
                         >
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
@@ -500,13 +500,13 @@ const Project = () => {
 
                     <div className="flex-1 p-3 space-y-1.5 overflow-y-auto">
                         {project.users && project.users.map((u, i) => (
-                            <div key={i} className="flex items-center gap-3 p-2.5 rounded-xl bg-slate-950/40 border border-slate-800/80">
-                                <div className="w-8 h-8 rounded-lg bg-indigo-600/20 text-indigo-400 font-semibold flex items-center justify-center text-xs uppercase border border-indigo-500/20">
+                            <div key={i} className="flex items-center gap-3 p-2.5 rounded-xl bg-zinc-950/60 border border-zinc-800/80">
+                                <div className="w-8 h-8 rounded-lg bg-white/10 text-white font-semibold flex items-center justify-center text-xs uppercase border border-white/20">
                                     {u.email?.[0] || 'U'}
                                 </div>
                                 <div className="overflow-hidden">
-                                    <p className="text-xs font-medium text-slate-200 truncate">{u.email}</p>
-                                    <p className="text-[10px] text-slate-500">Collaborator</p>
+                                    <p className="text-xs font-medium text-zinc-200 truncate">{u.email}</p>
+                                    <p className="text-[10px] text-zinc-500">Collaborator</p>
                                 </div>
                             </div>
                         ))}
@@ -517,26 +517,26 @@ const Project = () => {
             {/* RESIZER 1: Left Panel to Main IDE */}
             <div
                 onMouseDown={startResize(setLeftPanelWidth, 'left', true, false)}
-                className="w-1 relative cursor-col-resize group flex items-center justify-center z-30 shrink-0 select-none bg-slate-800/60 hover:bg-indigo-500 transition-colors"
+                className="w-1 relative cursor-col-resize group flex items-center justify-center z-30 shrink-0 select-none bg-zinc-800/80 hover:bg-white transition-colors"
             >
                 <div className="absolute inset-y-0 -left-1.5 -right-1.5" />
             </div>
 
             {/* 2. RIGHT / CENTER WORKSPACE */}
-            <section className="flex-1 flex h-screen bg-slate-950 overflow-hidden min-w-0">
+            <section className="flex-1 flex h-screen bg-zinc-950 overflow-hidden min-w-0">
                 {/* File Explorer */}
                 <div
                     style={{ width: `${explorerWidth}px` }}
-                    className="bg-slate-900/60 flex flex-col shrink-0 select-none will-change-[width]"
+                    className="bg-zinc-900/80 flex flex-col shrink-0 select-none will-change-[width]"
                 >
-                    <div className="px-4 h-10 flex items-center justify-between border-b border-slate-800">
-                        <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">Explorer</span>
-                        <span className="text-[10px] text-slate-500">{Object.keys(fileTree).length} files</span>
+                    <div className="px-4 h-10 flex items-center justify-between border-b border-zinc-800">
+                        <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-400">Explorer</span>
+                        <span className="text-[10px] text-zinc-500">{Object.keys(fileTree).length} files</span>
                     </div>
 
                     <div className="p-2 space-y-1 overflow-y-auto flex-1">
                         {Object.keys(fileTree).length === 0 ? (
-                            <p className="text-xs text-slate-500 p-2 italic">No files yet</p>
+                            <p className="text-xs text-zinc-500 p-2 italic">No files yet</p>
                         ) : (
                             Object.keys(fileTree).map((file, index) => {
                                 const isActive = currentFile === file
@@ -549,11 +549,11 @@ const Project = () => {
                                         }}
                                         className={`w-full flex items-center gap-2 px-3 py-2 text-xs font-mono rounded-lg transition text-left cursor-pointer ${
                                             isActive
-                                                ? 'bg-indigo-600/20 text-indigo-300 border border-indigo-500/30'
-                                                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+                                                ? 'bg-white/10 text-white border border-white/20 font-medium'
+                                                : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/60'
                                         }`}
                                     >
-                                        <svg className={`w-4 h-4 shrink-0 ${isActive ? 'text-indigo-400' : 'text-slate-500'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <svg className={`w-4 h-4 shrink-0 ${isActive ? 'text-white' : 'text-zinc-500'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
                                         </svg>
                                         <span className="truncate">{file}</span>
@@ -567,15 +567,15 @@ const Project = () => {
                 {/* RESIZER 2: Explorer to Code Editor */}
                 <div
                     onMouseDown={startResize(setExplorerWidth, 'explorer', true, false)}
-                    className="w-1 relative cursor-col-resize group flex items-center justify-center z-30 shrink-0 select-none bg-slate-800/60 hover:bg-indigo-500 transition-colors"
+                    className="w-1 relative cursor-col-resize group flex items-center justify-center z-30 shrink-0 select-none bg-zinc-800/80 hover:bg-white transition-colors"
                 >
                     <div className="absolute inset-y-0 -left-1.5 -right-1.5" />
                 </div>
 
                 {/* Code Editor & Terminal Panel */}
-                <div className="flex-1 flex flex-col min-w-0 bg-slate-950">
+                <div className="flex-1 flex flex-col min-w-0 bg-zinc-950">
                     {/* Editor Tab Bar */}
-                    <div className="h-10 bg-slate-900 border-b border-slate-800 flex items-center justify-between px-3 shrink-0">
+                    <div className="h-10 bg-zinc-900 border-b border-zinc-800 flex items-center justify-between px-3 shrink-0">
                         <div className="flex items-center gap-2 overflow-x-auto h-full scrollbar-hide">
                             {openFiles.map((file, index) => {
                                 const isActive = currentFile === file
@@ -585,14 +585,14 @@ const Project = () => {
                                         onClick={() => setCurrentFile(file)}
                                         className={`group flex items-center gap-2 h-8 px-3 text-xs font-mono rounded-t-md cursor-pointer border-t-2 transition ${
                                             isActive
-                                                ? 'bg-slate-950 text-indigo-300 border-indigo-500'
-                                                : 'bg-slate-900 text-slate-400 border-transparent hover:bg-slate-800/50 hover:text-slate-300'
+                                                ? 'bg-zinc-950 text-white border-white font-medium'
+                                                : 'bg-zinc-900 text-zinc-400 border-transparent hover:bg-zinc-800/50 hover:text-zinc-300'
                                         }`}
                                     >
                                         <span>{file}</span>
                                         <button
                                             onClick={(e) => closeFile(e, file)}
-                                            className="opacity-0 group-hover:opacity-100 hover:text-rose-400 transition p-0.5 rounded"
+                                            className="opacity-0 group-hover:opacity-100 hover:text-zinc-100 transition p-0.5 rounded"
                                         >
                                             <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
@@ -608,11 +608,11 @@ const Project = () => {
                             <button
                                 onClick={runProject}
                                 disabled={isRunning}
-                                className="flex items-center gap-1.5 px-3 py-1 bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 disabled:opacity-50 text-white text-xs font-semibold rounded-md shadow-sm transition"
+                                className="flex items-center gap-1.5 px-3.5 py-1 bg-white hover:bg-zinc-200 active:bg-zinc-300 disabled:opacity-50 text-black text-xs font-semibold rounded-md shadow-sm transition"
                             >
                                 {isRunning ? (
                                     <>
-                                        <svg className="animate-spin h-3.5 w-3.5 text-white" fill="none" viewBox="0 0 24 24">
+                                        <svg className="animate-spin h-3.5 w-3.5 text-black" fill="none" viewBox="0 0 24 24">
                                             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                                             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
                                         </svg>
@@ -620,9 +620,8 @@ const Project = () => {
                                     </>
                                 ) : (
                                     <>
-                                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        <svg className="w-3.5 h-3.5 fill-black" viewBox="0 0 24 24">
+                                            <path d="M8 5v14l11-7z" />
                                         </svg>
                                         <span>Run</span>
                                     </>
@@ -634,10 +633,10 @@ const Project = () => {
                     {/* Editor Content Area */}
                     <div className="flex-1 flex flex-col min-h-0 relative select-text overflow-hidden">
                         {currentFile && fileTree[currentFile] ? (
-                            <div className="flex-1 overflow-auto bg-slate-950 p-4 font-mono text-sm">
+                            <div className="flex-1 overflow-auto bg-zinc-950 p-4 font-mono text-sm">
                                 <pre className="h-full m-0">
                                     <code
-                                        className="outline-none block min-h-full text-slate-200"
+                                        className="outline-none block min-h-full text-zinc-200"
                                         contentEditable
                                         suppressContentEditableWarning
                                         onBlur={(e) => {
@@ -661,11 +660,11 @@ const Project = () => {
                                 </pre>
                             </div>
                         ) : (
-                            <div className="flex-1 flex flex-col items-center justify-center text-slate-600 select-none">
-                                <svg className="w-12 h-12 mb-3 stroke-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <div className="flex-1 flex flex-col items-center justify-center text-zinc-600 select-none">
+                                <svg className="w-12 h-12 mb-3 stroke-1 text-zinc-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
                                 </svg>
-                                <p className="text-sm">Select a file from the explorer to view or edit</p>
+                                <p className="text-sm text-zinc-500">Select a file from the explorer to view or edit</p>
                             </div>
                         )}
 
@@ -674,25 +673,25 @@ const Project = () => {
                             <>
                                 <div
                                     onMouseDown={startResize(setTerminalHeight, 'terminal', false, true)}
-                                    className="h-1 relative cursor-row-resize group flex items-center justify-center z-30 shrink-0 select-none bg-slate-800/80 hover:bg-indigo-500 transition-colors"
+                                    className="h-1 relative cursor-row-resize group flex items-center justify-center z-30 shrink-0 select-none bg-zinc-800/80 hover:bg-white transition-colors"
                                 >
                                     <div className="absolute -top-1.5 -bottom-1.5 inset-x-0" />
                                 </div>
 
                                 <div
                                     style={{ height: `${terminalHeight}px` }}
-                                    className="bg-slate-900 flex flex-col shrink-0 will-change-[height]"
+                                    className="bg-zinc-900 flex flex-col shrink-0 will-change-[height]"
                                 >
-                                    <div className="h-7 px-3 bg-slate-950 border-b border-slate-800 flex items-center justify-between text-[11px] text-slate-400 font-mono select-none">
-                                        <span className="text-slate-400 font-mono">Terminal Output</span>
+                                    <div className="h-7 px-3 bg-zinc-950 border-b border-zinc-800 flex items-center justify-between text-[11px] text-zinc-400 font-mono select-none">
+                                        <span className="text-zinc-400 font-mono">Terminal Output</span>
                                         <button
                                             onClick={() => setTerminalOutput('')}
-                                            className="hover:text-slate-200"
+                                            className="hover:text-white transition"
                                         >
                                             Clear
                                         </button>
                                     </div>
-                                    <pre className="flex-1 p-3 text-xs font-mono text-slate-300 overflow-y-auto whitespace-pre-wrap select-text">
+                                    <pre className="flex-1 p-3 text-xs font-mono text-zinc-300 overflow-y-auto whitespace-pre-wrap select-text">
                                         {terminalOutput}
                                     </pre>
                                 </div>
@@ -707,27 +706,27 @@ const Project = () => {
                         {/* RESIZER 3: Editor to Live Preview */}
                         <div
                             onMouseDown={startResize(setPreviewWidth, 'preview', true, true)}
-                            className="w-1 relative cursor-col-resize group flex items-center justify-center z-30 shrink-0 select-none bg-slate-800/60 hover:bg-indigo-500 transition-colors"
+                            className="w-1 relative cursor-col-resize group flex items-center justify-center z-30 shrink-0 select-none bg-zinc-800/80 hover:bg-white transition-colors"
                         >
                             <div className="absolute inset-y-0 -left-1.5 -right-1.5" />
                         </div>
 
                         <div
                             style={{ width: `${previewWidth}px` }}
-                            className="bg-slate-900 flex flex-col shrink-0 relative will-change-[width]"
+                            className="bg-zinc-900 flex flex-col shrink-0 relative will-change-[width]"
                         >
                             {/* Transparent overlay to stop iframe from intercepting mouse drag events */}
                             {isDragging && <div className="absolute inset-0 z-40 bg-transparent" />}
 
                             {/* Browser Bar */}
-                            <div className="h-10 px-3 bg-slate-900 border-b border-slate-800 flex items-center gap-2 select-none">
-                                <div className="flex-1 flex items-center bg-slate-950 px-2.5 py-1 rounded-md border border-slate-800 text-xs text-slate-400 truncate">
-                                    <span className="text-emerald-400 mr-1.5 text-[10px]">🔒</span>
+                            <div className="h-10 px-3 bg-zinc-900 border-b border-zinc-800 flex items-center gap-2 select-none">
+                                <div className="flex-1 flex items-center bg-zinc-950 px-2.5 py-1 rounded-md border border-zinc-800 text-xs text-zinc-400 truncate">
+                                    <span className="text-zinc-400 mr-1.5 text-[10px]">🔒</span>
                                     <input
                                         type="text"
                                         value={iframeUrl}
                                         onChange={(e) => setIframeUrl(e.target.value)}
-                                        className="bg-transparent outline-none w-full text-slate-300 text-xs font-mono"
+                                        className="bg-transparent outline-none w-full text-zinc-300 text-xs font-mono"
                                     />
                                 </div>
                                 <a
@@ -735,7 +734,7 @@ const Project = () => {
                                     target="_blank"
                                     rel="noreferrer"
                                     title="Open in new tab"
-                                    className="p-1 text-slate-400 hover:text-white rounded transition"
+                                    className="p-1 text-zinc-400 hover:text-white rounded transition"
                                 >
                                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
@@ -756,16 +755,16 @@ const Project = () => {
 
             {/* Modal: Invite Collaborators */}
             {isModalOpen && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm select-none">
-                    <div className="relative w-full max-w-md bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-2xl shadow-black/80 animate-in fade-in zoom-in-95 duration-150">
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/80 backdrop-blur-sm select-none">
+                    <div className="relative w-full max-w-md bg-zinc-900 border border-zinc-800 rounded-2xl p-6 shadow-2xl shadow-black animate-in fade-in zoom-in-95 duration-150">
                         <div className="flex items-center justify-between mb-4">
                             <div>
                                 <h3 className="text-lg font-bold text-white">Add Collaborators</h3>
-                                <p className="text-xs text-slate-400">Select users to grant workspace access</p>
+                                <p className="text-xs text-zinc-400">Select users to grant workspace access</p>
                             </div>
                             <button
                                 onClick={() => setIsModalOpen(false)}
-                                className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition"
+                                className="text-zinc-400 hover:text-white p-1 rounded-lg hover:bg-zinc-800 transition"
                             >
                                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
@@ -779,16 +778,16 @@ const Project = () => {
                                 value={userSearch}
                                 onChange={(e) => setUserSearch(e.target.value)}
                                 placeholder="Search by email..."
-                                className="w-full pl-9 pr-3 py-2 bg-slate-950 border border-slate-700/80 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
+                                className="w-full pl-9 pr-3 py-2 bg-zinc-950 border border-zinc-800 rounded-xl text-xs text-white placeholder-zinc-500 focus:outline-none focus:ring-1 focus:ring-white/40 focus:border-white"
                             />
-                            <svg className="w-4 h-4 text-slate-500 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg className="w-4 h-4 text-zinc-500 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                             </svg>
                         </div>
 
                         <div className="space-y-1.5 max-h-64 overflow-y-auto pr-1 mb-5">
                             {filteredUsers.length === 0 ? (
-                                <p className="text-xs text-slate-500 py-4 text-center">No users found</p>
+                                <p className="text-xs text-zinc-500 py-4 text-center">No users found</p>
                             ) : (
                                 filteredUsers.map((u) => {
                                     const isSelected = selectedUserId.has(u._id)
@@ -798,19 +797,19 @@ const Project = () => {
                                             onClick={() => handleUserClick(u._id)}
                                             className={`flex items-center justify-between p-2.5 rounded-xl cursor-pointer border transition ${
                                                 isSelected
-                                                    ? 'bg-indigo-600/15 border-indigo-500/40 text-white'
-                                                    : 'bg-slate-950/40 border-slate-800 text-slate-300 hover:bg-slate-800/50'
+                                                    ? 'bg-white/10 border-white/30 text-white'
+                                                    : 'bg-zinc-950/60 border-zinc-800 text-zinc-300 hover:bg-zinc-800/50'
                                             }`}
                                         >
                                             <div className="flex items-center gap-2.5 overflow-hidden">
-                                                <div className="w-7 h-7 rounded-lg bg-indigo-600/20 text-indigo-400 text-xs font-semibold flex items-center justify-center shrink-0">
+                                                <div className="w-7 h-7 rounded-lg bg-white/10 text-white text-xs font-semibold flex items-center justify-center shrink-0 border border-white/20">
                                                     {u.email?.[0]?.toUpperCase() || 'U'}
                                                 </div>
                                                 <span className="text-xs truncate">{u.email}</span>
                                             </div>
 
                                             <div className={`w-4 h-4 rounded-md flex items-center justify-center border transition ${
-                                                isSelected ? 'bg-indigo-600 border-indigo-600 text-white' : 'border-slate-700'
+                                                isSelected ? 'bg-white border-white text-black' : 'border-zinc-700'
                                             }`}>
                                                 {isSelected && (
                                                     <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -824,11 +823,11 @@ const Project = () => {
                             )}
                         </div>
 
-                        <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-800">
+                        <div className="flex items-center justify-end gap-3 pt-3 border-t border-zinc-800">
                             <button
                                 type="button"
                                 onClick={() => setIsModalOpen(false)}
-                                className="px-4 py-2 text-xs font-medium text-slate-400 hover:text-white rounded-xl transition"
+                                className="px-4 py-2 text-xs font-medium text-zinc-400 hover:text-white rounded-xl transition"
                             >
                                 Cancel
                             </button>
@@ -836,7 +835,7 @@ const Project = () => {
                                 type="button"
                                 onClick={addCollaborators}
                                 disabled={selectedUserId.size === 0}
-                                className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed text-white text-xs font-semibold rounded-xl shadow-lg shadow-indigo-600/30 transition"
+                                className="px-4 py-2 bg-white hover:bg-zinc-200 active:bg-zinc-300 disabled:opacity-50 disabled:cursor-not-allowed text-black text-xs font-semibold rounded-xl shadow-lg shadow-white/5 transition"
                             >
                                 Add ({selectedUserId.size}) Collaborators
                             </button>
