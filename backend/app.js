@@ -13,11 +13,13 @@ connect();
 
 const app = express();
 
+const allowedOrigins = [
+    'http://localhost:5174',
+    'https://soen-frotend.onrender.com'
+];
+
 app.use(cors({
-    origin: [
-        'http://localhost:5173',
-        'https://soen-frotend.onrender.com'
-    ],
+    origin: allowedOrigins,
     credentials: true
 }));
 app.use(morgan('dev'));
