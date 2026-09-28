@@ -53,8 +53,26 @@ const Project = () => {
     const [users, setUsers] = useState([])
     const [userSearch, setUserSearch] = useState('')
     const [messages, setMessages] = useState([])
+    const [copiedIndex, setCopiedIndex] = useState(null)
     const [typingUsers, setTypingUsers] = useState([])
     const [fileTree, setFileTree] = useState({})
+
+    const handleCopyMessage = (msgContent, index) => {
+        let textToCopy = msgContent
+        if (typeof msgContent === 'string') {
+            try {
+                const parsed = JSON.parse(msgContent)
+                textToCopy = parsed.text || msgContent
+            } catch {
+                textToCopy = msgContent
+            }
+        }
+        navigator.clipboard.writeText(textToCopy)
+        setCopiedIndex(index)
+        setTimeout(() => {
+            setCopiedIndex(null)
+        }, 2000)
+    }
 
     const [currentFile, setCurrentFile] = useState(null)
     const [openFiles, setOpenFiles] = useState([])
@@ -402,7 +420,7 @@ const Project = () => {
                         const isSelf = msg.sender?._id === user?._id?.toString()
 
                         return (
-                            <div key={index} className={`flex flex-col ${isSelf ? 'items-end' : 'items-start'} gap-1.5`}>
+                            <div key={index} className={`group flex flex-col ${isSelf ? 'items-end' : 'items-start'} gap-1.5`}>
                                 <div className="flex items-center gap-1.5 px-1">
                                     {isAi ? (
                                         <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-mono font-semibold bg-white/10 text-white border border-white/20 uppercase tracking-wider">
@@ -416,7 +434,7 @@ const Project = () => {
                                 </div>
 
                                 <div
-                                    className={`max-w-[90%] rounded-2xl p-3.5 text-sm shadow-md ${
+                                    className={`relative max-w-[90%] rounded-2xl p-3.5 text-sm shadow-md ${
                                         isAi
                                             ? 'bg-zinc-950 border border-zinc-800 text-zinc-100 rounded-tl-sm w-full'
                                             : isSelf
@@ -425,6 +443,32 @@ const Project = () => {
                                     }`}
                                 >
                                     {isAi ? WriteAiMessage(msg.message) : <p className="whitespace-pre-wrap break-words leading-relaxed">{msg.message}</p>}
+
+                                    <button
+                                        onClick={() => handleCopyMessage(msg.message, index)}
+                                        title="Copy message"
+                                        className={`absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 focus:opacity-100 transition-opacity duration-150 flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium shadow-sm cursor-pointer z-10 ${
+                                            isSelf
+                                                ? 'bg-zinc-200 hover:bg-zinc-300 text-zinc-800 border border-zinc-300'
+                                                : 'bg-zinc-800/95 hover:bg-zinc-700 border border-zinc-700/80 text-zinc-300 hover:text-white backdrop-blur-sm'
+                                        }`}
+                                    >
+                                        {copiedIndex === index ? (
+                                            <>
+                                                <svg className="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                                                </svg>
+                                                <span className="text-emerald-400 font-medium">Copied!</span>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 012-2v-8a2 2 0 01-2-2h-8a2 2 0 01-2 2v8a2 2 0 012 2z" />
+                                                </svg>
+                                                <span>Copy</span>
+                                            </>
+                                        )}
+                                    </button>
                                 </div>
                             </div>
                         )
