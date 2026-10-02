@@ -1,7 +1,9 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { UserContext } from '../context/user.context'
 import axios from '../config/axios'
+import RippleBackground from './RippleBackground'
+import Spheres from './Spheres'
 
 const Register = () => {
     const [email, setEmail] = useState('')
@@ -12,6 +14,55 @@ const Register = () => {
 
     const { setUser } = useContext(UserContext)
     const navigate = useNavigate()
+    const cardRef = useRef(null)
+    const tiltFrame = useRef(0)
+    const latestTilt = useRef({ rotateX: 0, rotateY: 0 })
+
+    // Apply the latest pointer position at most once per animation frame.
+    function handleCardMouseMove(event) {
+        const card = cardRef.current
+        if (!card) return
+
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            card.style.transition = 'none'
+            card.style.transform = 'none'
+            return
+        }
+
+        const bounds = card.getBoundingClientRect()
+        latestTilt.current = {
+            rotateX: (0.5 - (event.clientY - bounds.top) / bounds.height) * 8,
+            rotateY: ((event.clientX - bounds.left) / bounds.width - 0.5) * 8,
+        }
+        card.style.transition = 'none'
+
+        if (!tiltFrame.current) {
+            tiltFrame.current = requestAnimationFrame(() => {
+                const { rotateX, rotateY } = latestTilt.current
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`
+                tiltFrame.current = 0
+            })
+        }
+    }
+
+    function handleCardMouseLeave() {
+        const card = cardRef.current
+        if (!card) return
+
+        if (tiltFrame.current) {
+            cancelAnimationFrame(tiltFrame.current)
+            tiltFrame.current = 0
+        }
+
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            card.style.transition = 'none'
+            card.style.transform = 'none'
+            return
+        }
+
+        card.style.transition = 'transform 300ms cubic-bezier(0, 0, 0.2, 1)'
+        card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)'
+    }
 
     async function submitHandler(e) {
         e.preventDefault()
@@ -35,8 +86,16 @@ const Register = () => {
             {/* Ambient Background Glow */}
             <div className="absolute -top-40 -left-40 h-96 w-96 rounded-full bg-white/5 blur-3xl pointer-events-none" />
             <div className="absolute -bottom-40 -right-40 h-96 w-96 rounded-full bg-zinc-500/10 blur-3xl pointer-events-none" />
+            <RippleBackground />
+            <Spheres />
 
-            <div className="relative w-full max-w-md bg-zinc-900/90 backdrop-blur-xl border border-zinc-800 p-8 rounded-2xl shadow-2xl shadow-black">
+            <div
+                ref={cardRef}
+                onMouseMove={handleCardMouseMove}
+                onMouseLeave={handleCardMouseLeave}
+                style={{ transition: 'transform 300ms cubic-bezier(0, 0, 0.2, 1)' }}
+                className="relative z-10 w-full max-w-md bg-zinc-900/90 backdrop-blur-xl border border-zinc-800 p-8 rounded-2xl shadow-2xl shadow-black"
+            >
                 {/* Header */}
                 <div className="mb-8 text-center">
                     <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-white/10 border border-white/20 text-white mb-4 shadow-inner">
